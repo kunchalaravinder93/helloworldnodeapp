@@ -31,28 +31,34 @@ jobs:
 
       - name: Initialize Terraform
         run: |
-          terraform init helloworldnodeapp/.github/workflows  # Initialize Terraform in the directory with main.tf
+          cd helloworldnodeapp/.github/workflows  # Change directory into the Terraform configuration directory
+          terraform init
 
       - name: Validate Terraform Configuration
         run: |
-          terraform validate helloworldnodeapp/.github/workflows  # Validate the Terraform configuration
+          cd helloworldnodeapp/.github/workflows  # Change directory into the Terraform configuration directory
+          terraform validate
 
       - name: Plan Terraform Deployment
         run: |
-          terraform plan -input=false -out=tfplan helloworldnodeapp/.github/workflows  # Generate Terraform execution plan
+          cd helloworldnodeapp/.github/workflows  # Change directory into the Terraform configuration directory
+          terraform plan -input=false -out=tfplan
 
       - name: Apply Terraform Changes
         run: |
-          terraform apply -auto-approve tfplan helloworldnodeapp/.github/workflows  # Apply Terraform changes
+          cd helloworldnodeapp/.github/workflows  # Change directory into the Terraform configuration directory
+          terraform apply -auto-approve tfplan
 
       # Optionally, add more steps here for testing or other tasks
 
       - name: Show Terraform State
         run: |
-          terraform show helloworldnodeapp/.github/workflows  # Show Terraform state
+          cd helloworldnodeapp/.github/workflows  # Change directory into the Terraform configuration directory
+          terraform show
 
       # Optionally, add cleanup steps if needed
 
       - name: Cleanup Terraform
         run: |
-          terraform destroy -auto-approve helloworldnodeapp/.github/workflows  # Destroy resources managed by Terraform
+          cd helloworldnodeapp/.github/workflows  # Change directory into the Terraform configuration directory
+          terraform destroy -auto-approve
