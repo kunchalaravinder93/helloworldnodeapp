@@ -38,10 +38,16 @@ jobs:
           CONTAINER_NAME: MY_CONTAINER_NAME
 
       - name: Initialize Terraform
-        run: terraform init
+        run: |
+          cd terraform  # Change directory into the terraform folder
+          terraform init
 
       - name: Plan Terraform
-        run: terraform plan -out=tfplan
+        run: |
+          cd terraform  # Change directory into the terraform folder
+          terraform plan -input=false -out=tfplan
 
       - name: Apply Terraform
-        run: terraform apply -auto-approve tfplan
+        run: |
+          cd terraform  # Change directory into the terraform folder
+          terraform apply -auto-approve tfplan
