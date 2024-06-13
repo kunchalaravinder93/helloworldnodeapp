@@ -1,16 +1,16 @@
-name: Terraform Deployment
+name: Terraform CD
 
 on:
   push:
     branches:
-      - main
+      - main  # Trigger deployment on push to main branch
   pull_request:
     branches:
-      - main
+      - main  # Trigger deployment on PR to main branch
 
 jobs:
   terraform:
-    name: Deploy using Terraform
+    name: Deploy Terraform
     runs-on: ubuntu-latest
 
     steps:
@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v1
+        uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.1.6  # Specify the version you need
 
@@ -27,38 +27,13 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}  # Replace with your actual AWS region
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Initialize Terraform
-        run: |
-          cd terraform  # Change directory into the terraform folder
-          terraform init
+        run: terraform init
 
-      - name: Validate Terraform Configuration
-        run: |
-          cd terraform  # Change directory into the terraform folder
-          terraform validate
+      - name: Plan Terraform
+        run: terraform plan -out=tfplan
 
-      - name: Plan Terraform Deployment
-        run: |
-          cd terraform  # Change directory into the terraform folder
-          terraform plan -input=false -out=tfplan
-
-      - name: Apply Terraform Changes
-        run: |
-          cd terraform  # Change directory into the terraform folder
-          terraform apply -auto-approve tfplan
-
-      # Optionally, you can add more steps here for testing or other tasks
-
-      - name: Show Terraform State
-        run: |
-          cd terraform  # Change directory into the terraform folder
-          terraform show
-
-      # Optionally, you can add cleanup steps if needed
-
-      - name: Cleanup Terraform
-        run: |
-          cd terraform  # Change directory into the terraform folder
-          terraform destroy -auto-approve
+      - name: Apply Terraform
+        run: terraform apply -auto-approve tfplan
