@@ -56,8 +56,7 @@ jobs:
           cd helloworldnodeapp  # Change directory to where main.tf is located
           terraform show
 
-      # Optionally, add cleanup steps if needed
-
+      # Cleanup step
       - name: Cleanup Terraform
         run: |
           cd helloworldnodeapp  # Change directory to where main.tf is located
