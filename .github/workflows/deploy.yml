@@ -31,34 +31,29 @@ jobs:
 
       - name: Initialize Terraform
         run: |
-          cd helloworldnodeapp/.github/workflows  # Change directory into the Terraform configuration directory
           terraform init
+          terraform --version  # Optionally, print Terraform version for verification
 
       - name: Validate Terraform Configuration
         run: |
-          cd helloworldnodeapp/.github/workflows  # Change directory into the Terraform configuration directory
           terraform validate
 
       - name: Plan Terraform Deployment
         run: |
-          cd helloworldnodeapp/.github/workflows  # Change directory into the Terraform configuration directory
           terraform plan -input=false -out=tfplan
 
       - name: Apply Terraform Changes
         run: |
-          cd helloworldnodeapp/.github/workflows  # Change directory into the Terraform configuration directory
           terraform apply -auto-approve tfplan
 
       # Optionally, add more steps here for testing or other tasks
 
       - name: Show Terraform State
         run: |
-          cd helloworldnodeapp/.github/workflows  # Change directory into the Terraform configuration directory
           terraform show
 
       # Optionally, add cleanup steps if needed
 
       - name: Cleanup Terraform
         run: |
-          cd helloworldnodeapp/.github/workflows  # Change directory into the Terraform configuration directory
           terraform destroy -auto-approve
