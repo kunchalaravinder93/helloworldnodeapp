@@ -1,3 +1,4 @@
+
 name: Terraform CD
 
 on:
@@ -11,7 +12,7 @@ on:
 
 jobs:
   terraform:
-    name: Deploy and Undeploy Terraform
+    name: Deploy Terraform
     runs-on: ubuntu-latest
 
     steps:
@@ -33,17 +34,9 @@ jobs:
       - name: Initialize Terraform
         run: terraform init
 
-      - name: Plan Terraform Deployment
+      - name: Plan Terraform
         run: terraform plan -out=tfplan
 
-      - name: Apply Terraform Changes
+      - name: Apply Terraform
         run: terraform apply -auto-approve tfplan
 
-      # Optional: Add steps for testing or other tasks
-
-      - name: Show Terraform State
-        run: terraform show
-
-      # Add a step to destroy resources
-      - name: Destroy Terraform Resources
-        run: terraform destroy -auto-approve
