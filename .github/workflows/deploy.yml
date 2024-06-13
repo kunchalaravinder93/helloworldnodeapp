@@ -1,16 +1,16 @@
-name: Terraform CD
+name: Terraform Deployment
 
 on:
   push:
     branches:
-      - main  # Trigger deployment on push to main branch
+      - main
   pull_request:
     branches:
-      - main  # Trigger deployment on PR to main branch
+      - main
 
 jobs:
   terraform:
-    name: Deploy Terraform
+    name: Deploy using Terraform
     runs-on: ubuntu-latest
 
     steps:
@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v2
+        uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 1.1.6  # Specify the version you need
 
@@ -27,13 +27,32 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: ${{ secrets.AWS_REGION }}  # Replace with your actual AWS region
 
       - name: Initialize Terraform
-        run: terraform init
+        run: |
+          terraform init helloworldnodeapp/.github/workflows  # Initialize Terraform in the directory with main.tf
 
-      - name: Plan Terraform
-        run: terraform plan -out=tfplan
+      - name: Validate Terraform Configuration
+        run: |
+          terraform validate helloworldnodeapp/.github/workflows  # Validate the Terraform configuration
 
-      - name: Apply Terraform
-        run: terraform apply -auto-approve tfplan
+      - name: Plan Terraform Deployment
+        run: |
+          terraform plan -input=false -out=tfplan helloworldnodeapp/.github/workflows  # Generate Terraform execution plan
+
+      - name: Apply Terraform Changes
+        run: |
+          terraform apply -auto-approve tfplan helloworldnodeapp/.github/workflows  # Apply Terraform changes
+
+      # Optionally, add more steps here for testing or other tasks
+
+      - name: Show Terraform State
+        run: |
+          terraform show helloworldnodeapp/.github/workflows  # Show Terraform state
+
+      # Optionally, add cleanup steps if needed
+
+      - name: Cleanup Terraform
+        run: |
+          terraform destroy -auto-approve helloworldnodeapp/.github/workflows  # Destroy resources managed by Terraform
