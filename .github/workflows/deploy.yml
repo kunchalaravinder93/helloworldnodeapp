@@ -31,29 +31,34 @@ jobs:
 
       - name: Initialize Terraform
         run: |
+          cd helloworldnodeapp  # Change directory to where main.tf is located
           terraform init
-          terraform --version  # Optionally, print Terraform version for verification
 
       - name: Validate Terraform Configuration
         run: |
+          cd helloworldnodeapp  # Change directory to where main.tf is located
           terraform validate
 
       - name: Plan Terraform Deployment
         run: |
+          cd helloworldnodeapp  # Change directory to where main.tf is located
           terraform plan -input=false -out=tfplan
 
       - name: Apply Terraform Changes
         run: |
+          cd helloworldnodeapp  # Change directory to where main.tf is located
           terraform apply -auto-approve tfplan
 
       # Optionally, add more steps here for testing or other tasks
 
       - name: Show Terraform State
         run: |
+          cd helloworldnodeapp  # Change directory to where main.tf is located
           terraform show
 
       # Optionally, add cleanup steps if needed
 
       - name: Cleanup Terraform
         run: |
+          cd helloworldnodeapp  # Change directory to where main.tf is located
           terraform destroy -auto-approve
